@@ -1,4 +1,4 @@
-
+# A python module to convert a number or list of numbers into a variable name or list of variable names
 
 def generate_name_fixed(num: int, char_order: str, char_length: int):
     if num < 1 or char_order is None or len(char_order) < 1 or char_length < 1:
