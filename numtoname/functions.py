@@ -20,13 +20,23 @@ def generate_name_fixed(num: int, alphabet: str, name_length: int):
     return name_string
 
 
-def generate_names_fixed(start_num: int, end_num: int, alphabet: str, name_length: int):
-    if start_num < 1 or start_num > end_num or alphabet is None or len(alphabet) < 1 or name_length < 1:
+def generate_names_fixed(alphabet: str, name_length: int, start_num: int = -1, end_num: int = -1, num_list: list[int] = None):
+    if alphabet is None or len(alphabet) < 1 or name_length < 1:
+        return []
+    
+    if (start_num < 1 or start_num > end_num) and (num_list is None or len(num_list) < 1):
+        return []
+    
+    if num_list is not None and (start_num != -1 or end_num != -1):  # Ensure that we have either start_num and end_num or num_list, not both
         return []
     
     names = []
-    for i in range(start_num, end_num + 1):
-        names.append(generate_name_fixed(i, alphabet, name_length))
+    if num_list is None:
+        for i in range(start_num, end_num + 1):
+            names.append(generate_name_fixed(i, alphabet, name_length))
+    else:
+        for num in num_list:
+            names.append(generate_name_fixed(num, alphabet, name_length))
     
     return names
 
