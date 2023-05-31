@@ -45,7 +45,7 @@ def test_generate_names_fixed():
     assert functions.generate_names_fixed(alphabet3, 5, start_num = 1, end_num = 5) == ['aaaaa', 'aaaab', 'aaaac', 'aaaad', 'aaaae']
     assert functions.generate_names_fixed(alphabet3, 5, num_list = [11, 12, 13, 14]) == ['aaabc', 'aaabd', 'aaabe', 'aaabf']
     assert functions.generate_names_fixed(alphabet2, 5, num_list = [2, 9, 14, 15]) == ['aaaab', 'aaaai', 'aaaan', 'aaaao']
-    assert functions.generate_names_fixed(alphabet3, 5, num_list = [1, 2, 3, 5, 7], start_num = 5, end_num = 14) == []
+    assert functions.generate_names_fixed(alphabet3, 5, start_num = 5, end_num = 14, num_list = [1, 2, 3, 5, 7]) == []
     assert functions.generate_names_fixed(alphabet3, 5, start_num = 14, end_num = 13) == []
     assert functions.generate_names_fixed(alphabet2, 5, num_list = [0, 9, 14, 15]) == ['', 'aaaai', 'aaaan', 'aaaao']
     assert functions.generate_names_fixed(alphabet3, 5, start_num = -5, end_num = 14) == []
