@@ -100,3 +100,60 @@ def generate_names_alpha2(start_num: int, end_num: int):
     return generate_names(start_num, end_num, char_order)
 
 
+def num_from_name_fixed(name: str, char_order: str, char_length: int):
+    if name is None or len(name) < 1 or char_order is None or len(char_order) < 1 or char_length < 1:
+        return -1
+    
+    if len(name) != char_length:  # Verify that name is as long as char_length
+        return -1
+    
+    for char in name:  # Verify that all chars in name are in char_order
+        if char not in char_order:
+            return -1
+
+    num = 1
+    for i in range(len(name)):
+        magnitude = len(char_order) ** (len(name) - i - 1)
+        num += magnitude * (char_order.index(name[i]))
+
+    return num
+
+
+def nums_from_names_fixed(names: list[str], char_order: str, char_length: int):
+    if names is None or len(names) < 1 or char_order is None or len(char_order) < 1 or char_length < 1:
+        return []
+    
+    nums = []
+    for name in names:
+        nums.append(num_from_name_fixed(name, char_order, char_length))
+    
+    return nums
+
+
+def num_from_name(name: str, char_order: str):
+    if name is None or len(name) < 1 or char_order is None or len(char_order) < 1:
+        return -1
+    
+    for char in name:  # Verify that all chars in name are in char_order
+        if char not in char_order:
+            return -1
+
+    num = 0
+    for i in range(len(name)):
+        magnitude = len(char_order) ** (len(name) - i - 1)
+        num += magnitude * (char_order.index(name[i]) + 1)
+
+    return num
+
+
+def nums_from_names(names: list[str], char_order: str):
+    if names is None or len(names) < 1 or char_order is None or len(char_order) < 1:
+        return []
+    
+    nums = []
+    for name in names:
+        nums.append(num_from_name(name, char_order))
+    
+    return nums
+
+
