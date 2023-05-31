@@ -86,6 +86,30 @@ def test_num_from_name():
     assert functions.num_from_name(None, char_order1) == -1
 
 
+def test_nums_from_names_fixed():
+    assert functions.nums_from_names_fixed('ac', char_order2, 2) == 3
+    assert functions.nums_from_names_fixed('bc', char_order2, 2) == 29
+    assert functions.nums_from_names_fixed('abc', char_order2, 3) == 29
+    assert functions.nums_from_names_fixed('bbd', char_order2, 3) == 706
+    assert functions.nums_from_names_fixed('aaaaaaaaZZ', char_order1, 10) == 2704
+    assert functions.nums_from_names_fixed('aaaaaaaaZZ', char_order1, 9) == -1
+    assert functions.nums_from_names_fixed('aaaaaaaaZZ', char_order3, 10) == -1
+    assert functions.nums_from_names_fixed('', char_order1, 10) == -1
+    assert functions.nums_from_names_fixed(None, char_order1, 10) == -1
+
+
+def test_nums_from_names():
+    assert functions.nums_from_names('ac', char_order3) == 11
+    assert functions.nums_from_names('ac', char_order2) == 29
+    assert functions.nums_from_names('bc', char_order2) == 55
+    assert functions.nums_from_names('abc', char_order2) == 731
+    assert functions.nums_from_names('bbd', char_order2) == 1408
+    assert functions.nums_from_names('aaa', char_order3) == 73
+    assert functions.nums_from_names('aZZ', char_order3) == -1
+    assert functions.nums_from_names('', char_order1) == -1
+    assert functions.nums_from_names(None, char_order1) == -1
+
+
 if __name__ == '__main__':
     test_generate_name_fixed()
     test_generate_name()
@@ -93,6 +117,8 @@ if __name__ == '__main__':
     test_generate_names()
     test_num_from_name_fixed()
     test_num_from_name()
+    test_nums_from_names_fixed()
+    test_nums_from_names()
 
     print('All tests passed successfully!')
 
