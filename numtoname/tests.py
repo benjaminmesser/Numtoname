@@ -115,10 +115,15 @@ def test_nums_from_names():
 if __name__ == '__main__':
     test_generate_name_fixed()
     test_generate_name()
+
     test_generate_names_fixed()
     # test_generate_names()
+
+    
+
     test_num_from_name_fixed()
     test_num_from_name()
+
     # test_nums_from_names_fixed()
     # test_nums_from_names()
 
