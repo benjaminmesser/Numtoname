@@ -10,3 +10,11 @@ from numtoname.functions import generate_name_fixed_alpha2
 from numtoname.functions import generate_names_fixed_alpha2
 from numtoname.functions import generate_name_alpha2
 from numtoname.functions import generate_names_alpha2
+from numtoname.functions import generate_name_fixed_alpha3
+from numtoname.functions import generate_names_fixed_alpha3
+from numtoname.functions import generate_name_alpha3
+from numtoname.functions import generate_names_alpha3
+from numtoname.functions import num_from_name_fixed
+from numtoname.functions import nums_from_names_fixed
+from numtoname.functions import num_from_name
+from numtoname.functions import nums_from_names

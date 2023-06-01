@@ -55,13 +55,14 @@ def test_generate_names_fixed():
 
 
 def test_generate_names():
-    assert functions.generate_names(1, 5, alphabet3) == ['a', 'b', 'c', 'd', 'e']
-    assert functions.generate_names(11, 14, alphabet3) == ['ac', 'ad', 'ae', 'af']
-    assert functions.generate_names(14, 13, alphabet3) == []
-    assert functions.generate_names(0, 14, alphabet3) == []
-    assert functions.generate_names(-5, 14, alphabet3) == []
-    assert functions.generate_names(10, 14, '') == []
-    assert functions.generate_names(10, 14, None) == []
+    assert functions.generate_names(alphabet3, start_num = 1, end_num = 5) == ['a', 'b', 'c', 'd', 'e']
+    assert functions.generate_names(alphabet3, num_list = [11, 12, 13, 14]) == ['ac', 'ad', 'ae', 'af']
+    assert functions.generate_names(alphabet2, num_list = [2, 9, 14, 15]) == ['b', 'i', 'n', 'o']
+    assert functions.generate_names(alphabet3, start_num = 14, end_num = 13) == []
+    assert functions.generate_names(alphabet2, num_list = [0, 9, 14, 15]) == ['', 'i', 'n', 'o']
+    assert functions.generate_names(alphabet3, start_num = 0, end_num = 5) == []
+    assert functions.generate_names('', num_list = [2, 9, 14, 15]) == []
+    assert functions.generate_names(None, start_num = 1, end_num = 5) == []
 
 
 def test_num_from_name_fixed():
@@ -117,9 +118,9 @@ if __name__ == '__main__':
     test_generate_name()
 
     test_generate_names_fixed()
-    # test_generate_names()
+    test_generate_names()
 
-    
+
 
     test_num_from_name_fixed()
     test_num_from_name()
