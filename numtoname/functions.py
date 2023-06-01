@@ -26,15 +26,42 @@ def generate_name_fixed(num: int, alphabet: str, name_length: int, invalid_names
         deleted_element_count = 0
         for i in range(len(invalid_names)):
             if set(invalid_names[i - deleted_element_count]) <= set(alphabet):
-                pass  # invalid_name only contains characters in alphabet
+                pass  # invalid_name only contains characters in given alphabet
             else:
-                del invalid_names[i]
+                del invalid_names[i - deleted_element_count]
                 deleted_element_count += 1
         
         if deleted_element_count > 0:
             if warnings:
                 print(f'\n{deleted_element_count} names in invalid_names contained characters outside of the specified alphabet. These were ignored.\n' \
                     'Set warnings = False to not see this message.\n')
+        
+        # Sort invalid_names by alphabet, then by length
+        invalid_names = sorted(sorted(invalid_names, key=lambda word: [alphabet.index(c) for c in word]), key = len)
+
+        invalid_nums = nums_from_names_fixed(invalid_names, alphabet, name_length)
+
+        # invalid_nums.sort()  # Superfluous
+
+        skipped_name_count = 0
+        while True:
+            prev_skipped_name_count = skipped_name_count
+            deleted_element_count = 0
+            for i in range(len(invalid_nums)):
+                # print(invalid_nums)
+                if (num + skipped_name_count) >= invalid_nums[i - deleted_element_count]:
+                    if invalid_nums[i - deleted_element_count] > 0:
+                        skipped_name_count += 1
+
+                    del invalid_nums[i- deleted_element_count]
+                    deleted_element_count += 1
+                else:
+                    break
+            
+            if skipped_name_count == prev_skipped_name_count:
+                break
+        
+        num += skipped_name_count
 
     return base_generate_name_fixed(num, alphabet, name_length)
 
@@ -68,15 +95,43 @@ def generate_name(num: int, alphabet: str, invalid_names: list[str] = None, warn
         deleted_element_count = 0
         for i in range(len(invalid_names)):
             if set(invalid_names[i - deleted_element_count]) <= set(alphabet):
-                pass  # invalid_name only contains characters in alphabet
+                pass  # invalid_name only contains characters in given alphabet
             else:
-                del invalid_names[i]
+                del invalid_names[i - deleted_element_count]
                 deleted_element_count += 1
         
         if deleted_element_count > 0:
             if warnings:
                 print(f'\n{deleted_element_count} names in invalid_names contained characters outside of the specified alphabet. These were ignored.\n' \
                     'Set warnings = False to not see this message.\n')
+        
+        # Sort invalid_names by alphabet, then by length
+        invalid_names = sorted(sorted(invalid_names, key=lambda word: [alphabet.index(c) for c in word]), key = len)
+
+        invalid_nums = nums_from_names(invalid_names, alphabet)
+
+        # invalid_nums.sort()  # Superfluous
+
+        skipped_name_count = 0
+        while True:
+            prev_skipped_name_count = skipped_name_count
+            deleted_element_count = 0
+            for i in range(len(invalid_nums)):
+                # print(invalid_nums)
+                if (num + skipped_name_count) >= invalid_nums[i - deleted_element_count]:
+                    if invalid_nums[i - deleted_element_count] > 0:
+                        skipped_name_count += 1
+                        
+                    del invalid_nums[i- deleted_element_count]
+                    deleted_element_count += 1
+                else:
+                    break
+            
+            if skipped_name_count == prev_skipped_name_count:
+                break
+        
+        num += skipped_name_count
+
 
     name_length = 0
     running_total = 0
@@ -180,25 +235,53 @@ def num_from_name_fixed(name: str, alphabet: str, name_length: int, invalid_name
     if len(name) != name_length:  # Verify that name is as long as name_length
         return -1
     
-    for char in name:  # Verify that all chars in name are in alphabet
+    for char in name:  # Verify that all chars in name are in given alphabet
         if char not in alphabet:
             return -1
-        
+    
+    num = 1
     if invalid_names is not None and len(invalid_names) >= 1:
         deleted_element_count = 0
         for i in range(len(invalid_names)):
             if set(invalid_names[i - deleted_element_count]) <= set(alphabet):
-                pass  # invalid_name only contains characters in alphabet
+                pass  # invalid_name only contains characters in given alphabet
             else:
-                del invalid_names[i]
+                del invalid_names[i- deleted_element_count]
                 deleted_element_count += 1
         
         if deleted_element_count > 0:
             if warnings:
                 print(f'\n{deleted_element_count} names in invalid_names contained characters outside of the specified alphabet. These were ignored.\n' \
                     'Set warnings = False to not see this message.\n')
+        
+        # Sort invalid_names by alphabet, then by length
+        invalid_names = sorted(sorted(invalid_names, key=lambda word: [alphabet.index(c) for c in word]), key = len)
 
-    num = 1
+        invalid_nums = nums_from_names_fixed(invalid_names, alphabet, name_length)
+
+        # invalid_nums.sort()  # Superfluous
+
+        skipped_name_count = 0
+        num_of_name = num_from_name_fixed(name, alphabet, name_length)
+        while True:
+            prev_skipped_name_count = skipped_name_count
+            deleted_element_count = 0
+            for i in range(len(invalid_nums)):
+                # print(invalid_nums)
+                if (num_of_name + skipped_name_count) >= invalid_nums[i - deleted_element_count]:
+                    if invalid_nums[i - deleted_element_count] > 0:
+                        skipped_name_count += 1
+                        
+                    del invalid_nums[i- deleted_element_count]
+                    deleted_element_count += 1
+                else:
+                    break
+            
+            if skipped_name_count == prev_skipped_name_count:
+                break
+        
+        num += skipped_name_count
+
     for i in range(len(name)):
         magnitude = len(alphabet) ** (len(name) - i - 1)
         num += magnitude * (alphabet.index(name[i]))
@@ -221,25 +304,53 @@ def num_from_name(name: str, alphabet: str, invalid_names: list[str] = None, war
     if name is None or len(name) < 1 or alphabet is None or len(alphabet) < 1:
         return -1
     
-    for char in name:  # Verify that all chars in name are in alphabet
+    for char in name:  # Verify that all chars in name are in given alphabet
         if char not in alphabet:
             return -1
-        
+    
+    num = 0
     if invalid_names is not None and len(invalid_names) >= 1:
         deleted_element_count = 0
         for i in range(len(invalid_names)):
             if set(invalid_names[i - deleted_element_count]) <= set(alphabet):
-                pass  # invalid_name only contains characters in alphabet
+                pass  # invalid_name only contains characters in given alphabet
             else:
-                del invalid_names[i]
+                del invalid_names[i - deleted_element_count]
                 deleted_element_count += 1
         
         if deleted_element_count > 0:
             if warnings:
                 print(f'\n{deleted_element_count} names in invalid_names contained characters outside of the specified alphabet. These were ignored.\n' \
                     'Set warnings = False to not see this message.\n')
+        
+        # Sort invalid_names by alphabet, then by length
+        invalid_names = sorted(sorted(invalid_names, key=lambda word: [alphabet.index(c) for c in word]), key = len)
 
-    num = 0
+        invalid_nums = nums_from_names(invalid_names, alphabet)
+
+        # invalid_nums.sort()  # Superfluous
+
+        skipped_name_count = 0
+        num_of_name = num_from_name(name, alphabet)
+        while True:
+            prev_skipped_name_count = skipped_name_count
+            deleted_element_count = 0
+            for i in range(len(invalid_nums)):
+                # print(invalid_nums)
+                if (num_of_name + skipped_name_count) >= invalid_nums[i - deleted_element_count]:
+                    if invalid_nums[i - deleted_element_count] > 0:
+                        skipped_name_count += 1
+                        
+                    del invalid_nums[i- deleted_element_count]
+                    deleted_element_count += 1
+                else:
+                    break
+            
+            if skipped_name_count == prev_skipped_name_count:
+                break
+        
+        num += skipped_name_count
+
     for i in range(len(name)):
         magnitude = len(alphabet) ** (len(name) - i - 1)
         num += magnitude * (alphabet.index(name[i]) + 1)

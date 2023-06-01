@@ -28,6 +28,11 @@ def test_generate_name_fixed():
     assert functions.generate_name_fixed(50, '', 5) == ''
     assert functions.generate_name_fixed(50, None, 5) == ''
 
+    assert functions.generate_name_fixed(676, alphabet2, 5, invalid_names = ['aadfg', 'aaqwe', 'aaaaa', 'aaaaz', 'aaagg', 'aaaaa', 'aabaa', 'aabab', 'aabaf']) == 'aabag'
+    assert functions.generate_name_fixed(676, alphabet2, 5, invalid_names = ['aadfg', 'aaqwe', 'aaaa', 'aaaz', 'aagg', 'aaaaa', 'aabaa', 'aabab', 'aabac']) == 'aabad'
+    assert functions.generate_name_fixed(676, alphabet2, 5, invalid_names = ['aadfg', 'aaqwe', '', '', '', 'aaaaa', 'aabaa', 'aabab', 'aabac']) == 'aabad'
+    assert functions.generate_name_fixed(676, alphabet2, 5, invalid_names = []) == 'aaazz'
+
 
 def test_generate_name():
     assert functions.generate_name(2, alphabet3) == 'b'
@@ -39,6 +44,10 @@ def test_generate_name():
     assert functions.generate_name(-6, alphabet3) == ''
     assert functions.generate_name(5, '') == ''
     assert functions.generate_name(5, None) == ''
+
+    assert functions.generate_name(702, alphabet2, invalid_names = ['dfg', 'qwe', 'a', 'z', 'gg', 'aaaaaaaaaa', 'aaa', 'aab', 'aae']) == 'aaf'
+    assert functions.generate_name(702, alphabet2, invalid_names = ['dfg', 'qwe', 'a', 'z', '', 'aaaaaaaaaa', 'aaa', 'aab', 'aad']) == 'aae'
+    assert functions.generate_name(73, alphabet3, invalid_names = []) == 'aaa'
 
 
 def test_generate_names_fixed():
