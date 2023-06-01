@@ -21,13 +21,25 @@ def base_generate_name_fixed(num: int, alphabet: str, name_length: int):
     return name_string
 
 
-def generate_name_fixed(num: int, alphabet: str, name_length: int, invalid_names: list[str] = None):
+def generate_name_fixed(num: int, alphabet: str, name_length: int, invalid_names: list[str] = None, warnings: bool = True):
     if invalid_names is not None and len(invalid_names) >= 1:
-        pass
+        deleted_element_count = 0
+        for i in range(len(invalid_names)):
+            if set(invalid_names[i - deleted_element_count]) <= set(alphabet):
+                pass  # invalid_name only contains characters in alphabet
+            else:
+                del invalid_names[i]
+                deleted_element_count += 1
+        
+        if deleted_element_count > 0:
+            if warnings:
+                print(f'\n{deleted_element_count} names in invalid_names contained characters outside of the specified alphabet. These were ignored.\n' \
+                    'Set warnings = False to not see this message.\n')
+
     return base_generate_name_fixed(num, alphabet, name_length)
 
 
-def generate_names_fixed(alphabet: str, name_length: int, invalid_names: list[str] = None, start_num: int = -1, end_num: int = -1, num_list: list[int] = None):
+def generate_names_fixed(alphabet: str, name_length: int, invalid_names: list[str] = None, start_num: int = -1, end_num: int = -1, num_list: list[int] = None, warnings: bool = True):
     if alphabet is None or len(alphabet) < 1 or name_length < 1:
         return []
     
@@ -40,20 +52,31 @@ def generate_names_fixed(alphabet: str, name_length: int, invalid_names: list[st
     names = []
     if num_list is None:
         for i in range(start_num, end_num + 1):
-            names.append(generate_name_fixed(i, alphabet, name_length, invalid_names = invalid_names))
+            names.append(generate_name_fixed(i, alphabet, name_length, invalid_names = invalid_names, warnings = warnings))
     else:
         for num in num_list:
-            names.append(generate_name_fixed(num, alphabet, name_length, invalid_names = invalid_names))
+            names.append(generate_name_fixed(num, alphabet, name_length, invalid_names = invalid_names, warnings = warnings))
     
     return names
 
 
-def generate_name(num: int, alphabet: str, invalid_names: list[str] = None):
+def generate_name(num: int, alphabet: str, invalid_names: list[str] = None, warnings: bool = True):
     if num < 1 or alphabet is None or len(alphabet) < 1:
         return ''
     
     if invalid_names is not None and len(invalid_names) >= 1:
-        pass
+        deleted_element_count = 0
+        for i in range(len(invalid_names)):
+            if set(invalid_names[i - deleted_element_count]) <= set(alphabet):
+                pass  # invalid_name only contains characters in alphabet
+            else:
+                del invalid_names[i]
+                deleted_element_count += 1
+        
+        if deleted_element_count > 0:
+            if warnings:
+                print(f'\n{deleted_element_count} names in invalid_names contained characters outside of the specified alphabet. These were ignored.\n' \
+                    'Set warnings = False to not see this message.\n')
 
     name_length = 0
     running_total = 0
@@ -69,7 +92,7 @@ def generate_name(num: int, alphabet: str, invalid_names: list[str] = None):
     return base_generate_name_fixed(num - last_running_total, alphabet, name_length)
 
 
-def generate_names(alphabet: str, invalid_names: list[str] = None, start_num: int = -1, end_num: int = -1, num_list: list[int] = None):
+def generate_names(alphabet: str, invalid_names: list[str] = None, start_num: int = -1, end_num: int = -1, num_list: list[int] = None, warnings: bool = True):
     if alphabet is None or len(alphabet) < 1:
         return []
     
@@ -82,75 +105,75 @@ def generate_names(alphabet: str, invalid_names: list[str] = None, start_num: in
     names = []
     if num_list is None:
         for i in range(start_num, end_num + 1):
-            names.append(generate_name(i, alphabet, invalid_names = invalid_names))
+            names.append(generate_name(i, alphabet, invalid_names = invalid_names, warnings = warnings))
     else:
         for num in num_list:
-            names.append(generate_name(num, alphabet, invalid_names = invalid_names))
+            names.append(generate_name(num, alphabet, invalid_names = invalid_names, warnings = warnings))
     
     return names
 
 
-def generate_name_fixed_alpha(num: int, name_length: int, invalid_names: list[str] = None):
+def generate_name_fixed_alpha(num: int, name_length: int, invalid_names: list[str] = None, warnings: bool = True):
     alphabet = 'abcdefghijklmnopqrstuvwxyz'
-    return generate_name_fixed(num, alphabet, name_length, invalid_names = invalid_names)
+    return generate_name_fixed(num, alphabet, name_length, invalid_names = invalid_names, warnings = warnings)
 
 
-def generate_names_fixed_alpha(name_length: int, invalid_names: list[str] = None, start_num: int = -1, end_num: int = -1, num_list: list[int] = None):
+def generate_names_fixed_alpha(name_length: int, invalid_names: list[str] = None, start_num: int = -1, end_num: int = -1, num_list: list[int] = None, warnings: bool = True):
     alphabet = 'abcdefghijklmnopqrstuvwxyz'
-    return generate_names_fixed(alphabet, name_length, invalid_names = invalid_names, start_num = start_num, end_num = end_num, num_list = num_list)
+    return generate_names_fixed(alphabet, name_length, invalid_names = invalid_names, start_num = start_num, end_num = end_num, num_list = num_list, warnings = warnings)
     
 
-def generate_name_alpha(num: int, invalid_names: list[str] = None):
+def generate_name_alpha(num: int, invalid_names: list[str] = None, warnings: bool = True):
     alphabet = 'abcdefghijklmnopqrstuvwxyz'
-    return generate_name(num, alphabet, invalid_names = invalid_names)
+    return generate_name(num, alphabet, invalid_names = invalid_names, warnings = warnings)
 
 
-def generate_names_alpha(invalid_names: list[str] = None, start_num: int = -1, end_num: int = -1, num_list: list[int] = None):
+def generate_names_alpha(invalid_names: list[str] = None, start_num: int = -1, end_num: int = -1, num_list: list[int] = None, warnings: bool = True):
     alphabet = 'abcdefghijklmnopqrstuvwxyz'
-    return generate_names(alphabet, invalid_names = invalid_names, start_num = start_num, end_num = end_num, num_list = num_list)
+    return generate_names(alphabet, invalid_names = invalid_names, start_num = start_num, end_num = end_num, num_list = num_list, warnings = warnings)
 
 
-def generate_name_fixed_alpha2(num: int, name_length: int, invalid_names: list[str] = None):
+def generate_name_fixed_alpha2(num: int, name_length: int, invalid_names: list[str] = None, warnings: bool = True):
     alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
-    return generate_name_fixed(num, alphabet, name_length, invalid_names = invalid_names)
+    return generate_name_fixed(num, alphabet, name_length, invalid_names = invalid_names, warnings = warnings)
 
 
-def generate_names_fixed_alpha2(name_length: int, invalid_names: list[str] = None, start_num: int = -1, end_num: int = -1, num_list: list[int] = None):
+def generate_names_fixed_alpha2(name_length: int, invalid_names: list[str] = None, start_num: int = -1, end_num: int = -1, num_list: list[int] = None, warnings: bool = True):
     alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
-    return generate_names_fixed(alphabet, name_length, invalid_names = invalid_names, start_num = start_num, end_num = end_num, num_list = num_list)
+    return generate_names_fixed(alphabet, name_length, invalid_names = invalid_names, start_num = start_num, end_num = end_num, num_list = num_list, warnings = warnings)
     
 
-def generate_name_alpha2(num: int, invalid_names: list[str] = None):
+def generate_name_alpha2(num: int, invalid_names: list[str] = None, warnings: bool = True):
     alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
-    return generate_name(num, alphabet, invalid_names = invalid_names)
+    return generate_name(num, alphabet, invalid_names = invalid_names, warnings = warnings)
 
 
-def generate_names_alpha2(invalid_names: list[str] = None, start_num: int = -1, end_num: int = -1, num_list: list[int] = None):
+def generate_names_alpha2(invalid_names: list[str] = None, start_num: int = -1, end_num: int = -1, num_list: list[int] = None, warnings: bool = True):
     alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
-    return generate_names(alphabet, invalid_names = invalid_names, start_num = start_num, end_num = end_num, num_list = num_list)
+    return generate_names(alphabet, invalid_names = invalid_names, start_num = start_num, end_num = end_num, num_list = num_list, warnings = warnings)
 
 
-def generate_name_fixed_alpha3(num: int, name_length: int, invalid_names: list[str] = None):
+def generate_name_fixed_alpha3(num: int, name_length: int, invalid_names: list[str] = None, warnings: bool = True):
     alphabet = 'aAbBcCdDeEfFgGhHiIjJkKlLmMnNoOpPqQrRsStTuUvVwWxXyYzZ'
-    return generate_name_fixed(num, alphabet, name_length, invalid_names = invalid_names)
+    return generate_name_fixed(num, alphabet, name_length, invalid_names = invalid_names, warnings = warnings)
 
 
-def generate_names_fixed_alpha3(name_length: int, invalid_names: list[str] = None, start_num: int = -1, end_num: int = -1, num_list: list[int] = None):
+def generate_names_fixed_alpha3(name_length: int, invalid_names: list[str] = None, start_num: int = -1, end_num: int = -1, num_list: list[int] = None, warnings: bool = True):
     alphabet = 'aAbBcCdDeEfFgGhHiIjJkKlLmMnNoOpPqQrRsStTuUvVwWxXyYzZ'
-    return generate_names_fixed(alphabet, name_length, invalid_names = invalid_names, start_num = start_num, end_num = end_num, num_list = num_list)
+    return generate_names_fixed(alphabet, name_length, invalid_names = invalid_names, start_num = start_num, end_num = end_num, num_list = num_list, warnings = warnings)
     
 
-def generate_name_alpha3(num: int, invalid_names: list[str] = None):
+def generate_name_alpha3(num: int, invalid_names: list[str] = None, warnings: bool = True):
     alphabet = 'aAbBcCdDeEfFgGhHiIjJkKlLmMnNoOpPqQrRsStTuUvVwWxXyYzZ'
-    return generate_name(num, alphabet, invalid_names = invalid_names)
+    return generate_name(num, alphabet, invalid_names = invalid_names, warnings = warnings)
 
 
-def generate_names_alpha3(invalid_names: list[str] = None, start_num: int = -1, end_num: int = -1, num_list: list[int] = None):
+def generate_names_alpha3(invalid_names: list[str] = None, start_num: int = -1, end_num: int = -1, num_list: list[int] = None, warnings: bool = True):
     alphabet = 'aAbBcCdDeEfFgGhHiIjJkKlLmMnNoOpPqQrRsStTuUvVwWxXyYzZ'
-    return generate_names(alphabet, invalid_names = invalid_names, start_num = start_num, end_num = end_num, num_list = num_list)
+    return generate_names(alphabet, invalid_names = invalid_names, start_num = start_num, end_num = end_num, num_list = num_list, warnings = warnings)
 
 
-def num_from_name_fixed(name: str, alphabet: str, name_length: int, invalid_names: list[str] = None):
+def num_from_name_fixed(name: str, alphabet: str, name_length: int, invalid_names: list[str] = None, warnings: bool = True):
     if name is None or len(name) < 1 or alphabet is None or len(alphabet) < 1 or name_length < 1:
         return -1
     
@@ -162,7 +185,18 @@ def num_from_name_fixed(name: str, alphabet: str, name_length: int, invalid_name
             return -1
         
     if invalid_names is not None and len(invalid_names) >= 1:
-        pass
+        deleted_element_count = 0
+        for i in range(len(invalid_names)):
+            if set(invalid_names[i - deleted_element_count]) <= set(alphabet):
+                pass  # invalid_name only contains characters in alphabet
+            else:
+                del invalid_names[i]
+                deleted_element_count += 1
+        
+        if deleted_element_count > 0:
+            if warnings:
+                print(f'\n{deleted_element_count} names in invalid_names contained characters outside of the specified alphabet. These were ignored.\n' \
+                    'Set warnings = False to not see this message.\n')
 
     num = 1
     for i in range(len(name)):
@@ -172,18 +206,18 @@ def num_from_name_fixed(name: str, alphabet: str, name_length: int, invalid_name
     return num
 
 
-def nums_from_names_fixed(names: list[str], alphabet: str, name_length: int, invalid_names: list[str] = None):
+def nums_from_names_fixed(names: list[str], alphabet: str, name_length: int, invalid_names: list[str] = None, warnings: bool = True):
     if names is None or len(names) < 1 or alphabet is None or len(alphabet) < 1 or name_length < 1:
         return []
     
     nums = []
     for name in names:
-        nums.append(num_from_name_fixed(name, alphabet, name_length))
+        nums.append(num_from_name_fixed(name, alphabet, name_length, invalid_names = invalid_names, warnings = warnings))
     
     return nums
 
 
-def num_from_name(name: str, alphabet: str, invalid_names: list[str] = None):
+def num_from_name(name: str, alphabet: str, invalid_names: list[str] = None, warnings: bool = True):
     if name is None or len(name) < 1 or alphabet is None or len(alphabet) < 1:
         return -1
     
@@ -192,7 +226,18 @@ def num_from_name(name: str, alphabet: str, invalid_names: list[str] = None):
             return -1
         
     if invalid_names is not None and len(invalid_names) >= 1:
-        pass
+        deleted_element_count = 0
+        for i in range(len(invalid_names)):
+            if set(invalid_names[i - deleted_element_count]) <= set(alphabet):
+                pass  # invalid_name only contains characters in alphabet
+            else:
+                del invalid_names[i]
+                deleted_element_count += 1
+        
+        if deleted_element_count > 0:
+            if warnings:
+                print(f'\n{deleted_element_count} names in invalid_names contained characters outside of the specified alphabet. These were ignored.\n' \
+                    'Set warnings = False to not see this message.\n')
 
     num = 0
     for i in range(len(name)):
@@ -202,13 +247,13 @@ def num_from_name(name: str, alphabet: str, invalid_names: list[str] = None):
     return num
 
 
-def nums_from_names(names: list[str], alphabet: str, invalid_names: list[str] = None):
+def nums_from_names(names: list[str], alphabet: str, invalid_names: list[str] = None, warnings: bool = True):
     if names is None or len(names) < 1 or alphabet is None or len(alphabet) < 1:
         return []
     
     nums = []
     for name in names:
-        nums.append(num_from_name(name, alphabet))
+        nums.append(num_from_name(name, alphabet, invalid_names = invalid_names, warnings = warnings))
     
     return nums
 
