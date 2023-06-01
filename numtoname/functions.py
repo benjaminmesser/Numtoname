@@ -66,7 +66,7 @@ def generate_name_fixed(num: int, alphabet: str, name_length: int, invalid_names
     return base_generate_name_fixed(num, alphabet, name_length)
 
 
-def generate_names_fixed(alphabet: str, name_length: int, invalid_names: list[str] = None, start_num: int = -1, end_num: int = -1, num_list: list[int] = None, warnings: bool = True) -> list[str]:
+def generate_names_fixed(alphabet: str, name_length: int, start_num: int = -1, end_num: int = -1, num_list: list[int] = None, invalid_names: list[str] = None, warnings: bool = True) -> list[str]:
     if alphabet is None or len(alphabet) < 1 or name_length < 1:
         return []
     
@@ -147,7 +147,7 @@ def generate_name(num: int, alphabet: str, invalid_names: list[str] = None, warn
     return base_generate_name_fixed(num - last_running_total, alphabet, name_length)
 
 
-def generate_names(alphabet: str, invalid_names: list[str] = None, start_num: int = -1, end_num: int = -1, num_list: list[int] = None, warnings: bool = True) -> list[str]:
+def generate_names(alphabet: str, start_num: int = -1, end_num: int = -1, num_list: list[int] = None, invalid_names: list[str] = None, warnings: bool = True) -> list[str]:
     if alphabet is None or len(alphabet) < 1:
         return []
     
@@ -173,7 +173,7 @@ def generate_name_fixed_alpha(num: int, name_length: int, invalid_names: list[st
     return generate_name_fixed(num, alphabet, name_length, invalid_names = invalid_names, warnings = warnings)
 
 
-def generate_names_fixed_alpha(name_length: int, invalid_names: list[str] = None, start_num: int = -1, end_num: int = -1, num_list: list[int] = None, warnings: bool = True) -> list[str]:
+def generate_names_fixed_alpha(name_length: int, start_num: int = -1, end_num: int = -1, num_list: list[int] = None, invalid_names: list[str] = None, warnings: bool = True) -> list[str]:
     alphabet = 'abcdefghijklmnopqrstuvwxyz'
     return generate_names_fixed(alphabet, name_length, invalid_names = invalid_names, start_num = start_num, end_num = end_num, num_list = num_list, warnings = warnings)
     
@@ -183,7 +183,7 @@ def generate_name_alpha(num: int, invalid_names: list[str] = None, warnings: boo
     return generate_name(num, alphabet, invalid_names = invalid_names, warnings = warnings)
 
 
-def generate_names_alpha(invalid_names: list[str] = None, start_num: int = -1, end_num: int = -1, num_list: list[int] = None, warnings: bool = True) -> list[str]:
+def generate_names_alpha(start_num: int = -1, end_num: int = -1, num_list: list[int] = None, invalid_names: list[str] = None, warnings: bool = True) -> list[str]:
     alphabet = 'abcdefghijklmnopqrstuvwxyz'
     return generate_names(alphabet, invalid_names = invalid_names, start_num = start_num, end_num = end_num, num_list = num_list, warnings = warnings)
 
@@ -193,7 +193,7 @@ def generate_name_fixed_alpha2(num: int, name_length: int, invalid_names: list[s
     return generate_name_fixed(num, alphabet, name_length, invalid_names = invalid_names, warnings = warnings)
 
 
-def generate_names_fixed_alpha2(name_length: int, invalid_names: list[str] = None, start_num: int = -1, end_num: int = -1, num_list: list[int] = None, warnings: bool = True) -> list[str]:
+def generate_names_fixed_alpha2(name_length: int, start_num: int = -1, end_num: int = -1, num_list: list[int] = None, invalid_names: list[str] = None, warnings: bool = True) -> list[str]:
     alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
     return generate_names_fixed(alphabet, name_length, invalid_names = invalid_names, start_num = start_num, end_num = end_num, num_list = num_list, warnings = warnings)
     
@@ -203,7 +203,7 @@ def generate_name_alpha2(num: int, invalid_names: list[str] = None, warnings: bo
     return generate_name(num, alphabet, invalid_names = invalid_names, warnings = warnings)
 
 
-def generate_names_alpha2(invalid_names: list[str] = None, start_num: int = -1, end_num: int = -1, num_list: list[int] = None, warnings: bool = True) -> list[str]:
+def generate_names_alpha2(start_num: int = -1, end_num: int = -1, num_list: list[int] = None, invalid_names: list[str] = None, warnings: bool = True) -> list[str]:
     alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
     return generate_names(alphabet, invalid_names = invalid_names, start_num = start_num, end_num = end_num, num_list = num_list, warnings = warnings)
 
@@ -213,7 +213,7 @@ def generate_name_fixed_alpha3(num: int, name_length: int, invalid_names: list[s
     return generate_name_fixed(num, alphabet, name_length, invalid_names = invalid_names, warnings = warnings)
 
 
-def generate_names_fixed_alpha3(name_length: int, invalid_names: list[str] = None, start_num: int = -1, end_num: int = -1, num_list: list[int] = None, warnings: bool = True) -> list[str]:
+def generate_names_fixed_alpha3(name_length: int, start_num: int = -1, end_num: int = -1, num_list: list[int] = None, invalid_names: list[str] = None, warnings: bool = True) -> list[str]:
     alphabet = 'aAbBcCdDeEfFgGhHiIjJkKlLmMnNoOpPqQrRsStTuUvVwWxXyYzZ'
     return generate_names_fixed(alphabet, name_length, invalid_names = invalid_names, start_num = start_num, end_num = end_num, num_list = num_list, warnings = warnings)
     
@@ -223,7 +223,7 @@ def generate_name_alpha3(num: int, invalid_names: list[str] = None, warnings: bo
     return generate_name(num, alphabet, invalid_names = invalid_names, warnings = warnings)
 
 
-def generate_names_alpha3(invalid_names: list[str] = None, start_num: int = -1, end_num: int = -1, num_list: list[int] = None, warnings: bool = True) -> list[str]:
+def generate_names_alpha3(start_num: int = -1, end_num: int = -1, num_list: list[int] = None, invalid_names: list[str] = None, warnings: bool = True) -> list[str]:
     alphabet = 'aAbBcCdDeEfFgGhHiIjJkKlLmMnNoOpPqQrRsStTuUvVwWxXyYzZ'
     return generate_names(alphabet, invalid_names = invalid_names, start_num = start_num, end_num = end_num, num_list = num_list, warnings = warnings)
 
