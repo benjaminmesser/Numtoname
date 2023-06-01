@@ -90,27 +90,21 @@ def test_num_from_name():
 
 
 def test_nums_from_names_fixed():
-    assert functions.nums_from_names_fixed('ac', alphabet2, 2) == 3
-    assert functions.nums_from_names_fixed('bc', alphabet2, 2) == 29
-    assert functions.nums_from_names_fixed('abc', alphabet2, 3) == 29
-    assert functions.nums_from_names_fixed('bbd', alphabet2, 3) == 706
-    assert functions.nums_from_names_fixed('aaaaaaaaZZ', alphabet1, 10) == 2704
-    assert functions.nums_from_names_fixed('aaaaaaaaZZ', alphabet1, 9) == -1
-    assert functions.nums_from_names_fixed('aaaaaaaaZZ', alphabet3, 10) == -1
-    assert functions.nums_from_names_fixed('', alphabet1, 10) == -1
-    assert functions.nums_from_names_fixed(None, alphabet1, 10) == -1
+    assert functions.nums_from_names_fixed(['aaaaa', 'aaaab', 'aaaac', 'aaaad', 'aaaae'], alphabet2, 5) == [1, 2, 3, 4, 5]
+    assert functions.nums_from_names_fixed(['ac', 'ad', 'ba', 'bc'], alphabet2, 2) == [3, 4, 27, 29]
+    assert functions.nums_from_names_fixed(['acb', 'ad', 'ba', 'b'], alphabet2, 2) == [-1, 4, 27, -1]
+    assert functions.nums_from_names_fixed(['ac', 'zz', 'ba', 'bc'], alphabet3, 2) == [3, -1, 9, 11]
+    assert functions.nums_from_names_fixed(['ac', 'ad', 'ba', 'bc'], alphabet2, -5) == []
+    assert functions.nums_from_names_fixed(['ac', 'ad', 'ba', 'bc'], '', 2) == []
+    assert functions.nums_from_names_fixed([], alphabet3, 2) == []
 
 
 def test_nums_from_names():
-    assert functions.nums_from_names('ac', alphabet3) == 11
-    assert functions.nums_from_names('ac', alphabet2) == 29
-    assert functions.nums_from_names('bc', alphabet2) == 55
-    assert functions.nums_from_names('abc', alphabet2) == 731
-    assert functions.nums_from_names('bbd', alphabet2) == 1408
-    assert functions.nums_from_names('aaa', alphabet3) == 73
-    assert functions.nums_from_names('aZZ', alphabet3) == -1
-    assert functions.nums_from_names('', alphabet1) == -1
-    assert functions.nums_from_names(None, alphabet1) == -1
+    assert functions.nums_from_names(['a', 'b', 'c', 'd', 'e'], alphabet2) == [1, 2, 3, 4, 5]
+    assert functions.nums_from_names(['ac', 'ad', 'ba', 'bc'], alphabet2) == [29, 30, 53, 55]
+    assert functions.nums_from_names(['ac', 'zz', 'ba', 'bc'], alphabet3) == [11, -1, 17, 19]
+    assert functions.nums_from_names(['ac', 'ad', 'ba', 'bc'], '') == []
+    assert functions.nums_from_names([], alphabet3) == []
 
 
 if __name__ == '__main__':
@@ -125,8 +119,8 @@ if __name__ == '__main__':
     test_num_from_name_fixed()
     test_num_from_name()
 
-    # test_nums_from_names_fixed()
-    # test_nums_from_names()
+    test_nums_from_names_fixed()
+    test_nums_from_names()
 
     print('All tests passed successfully!')
 
