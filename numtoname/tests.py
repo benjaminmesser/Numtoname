@@ -31,6 +31,7 @@ def test_generate_name_fixed():
     assert functions.generate_name_fixed(676, alphabet2, 5, invalid_names = ['aadfg', 'aaqwe', 'aaaaa', 'aaaaz', 'aaagg', 'aaaaa', 'aabaa', 'aabab', 'aabaf']) == 'aabag'
     assert functions.generate_name_fixed(676, alphabet2, 5, invalid_names = ['aadfg', 'aaqwe', 'aaaa', 'aaaz', 'aagg', 'aaaaa', 'aabaa', 'aabab', 'aabac']) == 'aabad'
     assert functions.generate_name_fixed(676, alphabet2, 5, invalid_names = ['aadfg', 'aaqwe', '', '', '', 'aaaaa', 'aabaa', 'aabab', 'aabac']) == 'aabad'
+    assert functions.generate_name_fixed(676, alphabet2, 5, invalid_names = ['aadfg', 'aaqwe', 'A', '', 'B', 'aaaaa', 'aabaa', 'aabab', 'aabac']) == 'aabad'
     assert functions.generate_name_fixed(676, alphabet2, 5, invalid_names = []) == 'aaazz'
 
 
@@ -47,6 +48,7 @@ def test_generate_name():
 
     assert functions.generate_name(702, alphabet2, invalid_names = ['dfg', 'qwe', 'a', 'z', 'gg', 'aaaaaaaaaa', 'aaa', 'aab', 'aae']) == 'aaf'
     assert functions.generate_name(702, alphabet2, invalid_names = ['dfg', 'qwe', 'a', 'z', '', 'aaaaaaaaaa', 'aaa', 'aab', 'aad']) == 'aae'
+    assert functions.generate_name(702, alphabet2, invalid_names = ['dfg', 'qwe', 'a', 'z', 'A', 'aaaaaaaaaa', 'aaa', 'aab', 'aad']) == 'aae'
     assert functions.generate_name(73, alphabet3, invalid_names = []) == 'aaa'
 
 
@@ -62,6 +64,14 @@ def test_generate_names_fixed():
     assert functions.generate_names_fixed('', 5, start_num = 10, end_num = 14) == []
     assert functions.generate_names_fixed(None, 5, start_num = 10, end_num = 14) == []
 
+    assert functions.generate_names_fixed(alphabet2, 5, start_num = 676, end_num = 680, \
+        invalid_names = ['aadfg', 'aaqwe', 'aaaaa', 'aaaaz', 'aaagg', 'aaaaa', 'aabaa', 'aabab', 'aabaf', 'aabaj']) == ['aabag', 'aabah', 'aabai', 'aabak', 'aabal']
+    assert functions.generate_names_fixed(alphabet2, 5, start_num = 676, end_num = 680, \
+        invalid_names = ['aadfg', 'aaqwe', 'aaaa', 'aaaz', 'aagg', 'aaaaa', 'aabaa', 'aabab', 'aabac', 'aabag']) == ['aabad', 'aabae', 'aabaf', 'aabah', 'aabai']
+    assert functions.generate_names_fixed(alphabet2, 5, start_num = 676, end_num = 680, \
+        invalid_names = ['aadfg', 'aaqwe', 'aaaaB', 'aaazA', 'aagg', 'aaaaa', 'aabaa', 'aabab', 'aabac', 'aabag']) == ['aabad', 'aabae', 'aabaf', 'aabah', 'aabai']
+    assert functions.generate_names_fixed(alphabet2, 5, num_list = [2, 9, 14, 15], invalid_names=[]) == ['aaaab', 'aaaai', 'aaaan', 'aaaao']
+
 
 def test_generate_names():
     assert functions.generate_names(alphabet3, start_num = 1, end_num = 5) == ['a', 'b', 'c', 'd', 'e']
@@ -72,6 +82,14 @@ def test_generate_names():
     assert functions.generate_names(alphabet3, start_num = 0, end_num = 5) == []
     assert functions.generate_names('', num_list = [2, 9, 14, 15]) == []
     assert functions.generate_names(None, start_num = 1, end_num = 5) == []
+
+    assert functions.generate_names(alphabet2, start_num = 702, end_num = 705, \
+        invalid_names = ['dfg', 'qwe', 'a', 'z', 'gg', 'aaaaaaaaaa', 'aaa', 'aab', 'aae', 'aah']) == ['aaf', 'aag', 'aai', 'aaj']
+    assert functions.generate_names(alphabet2, start_num = 702, end_num = 705, \
+        invalid_names = ['dfg', 'qwe', 'a', 'z', '', 'aaaaaaaaaa', 'aaa', 'aab', 'aad', 'aag']) == ['aae', 'aaf', 'aah', 'aai']
+    assert functions.generate_names(alphabet2, start_num = 702, end_num = 705, \
+        invalid_names = ['dfg', 'qwe', 'a', 'z', 'A', 'aaaaaaaaaa', 'aaa', 'aab', 'aad', 'aag']) == ['aae', 'aaf', 'aah', 'aai']
+    assert functions.generate_names(alphabet3, num_list = [11, 12, 13, 14], invalid_names = []) == ['ac', 'ad', 'ae', 'af']
 
 
 def test_num_from_name_fixed():
@@ -85,6 +103,11 @@ def test_num_from_name_fixed():
     assert functions.num_from_name_fixed('', alphabet1, 10) == -1
     assert functions.num_from_name_fixed(None, alphabet1, 10) == -1
 
+    assert functions.num_from_name_fixed('aaazz', alphabet2, 5, invalid_names = ['aadfg', 'aaqwe', 'aaaaa', 'aaaaz', 'aaagg', 'aaaaa', 'aabaa', 'aabab', 'aabaf']) == 672
+    assert functions.num_from_name_fixed('aaazz', alphabet2, 5, invalid_names = ['aadfg', 'aaqwe', 'aaaaa', '', 'aaagg', 'aaaaa', 'aabaa', 'aabab', 'aabae']) == 673
+    assert functions.num_from_name_fixed('aaazz', alphabet2, 5, invalid_names = ['aadfg', 'aaqwe', 'aaaaa', 'aaaaZ', 'aaagg', 'aaaaa', 'aabaa', 'aabab', 'aabae']) == 673
+    assert functions.num_from_name_fixed('abc', alphabet2, 3, invalid_names = []) == 29
+
 
 def test_num_from_name():
     assert functions.num_from_name('ac', alphabet3) == 11
@@ -97,6 +120,11 @@ def test_num_from_name():
     assert functions.num_from_name('', alphabet1) == -1
     assert functions.num_from_name(None, alphabet1) == -1
 
+    assert functions.num_from_name('zz', alphabet2, invalid_names = ['dfg', 'qwe', 'a', 'z', 'gg', 'aaaaaaaaaa', 'aaa', 'aab', 'aae']) == 699
+    assert functions.num_from_name('zz', alphabet2, invalid_names = ['dfg', 'qwe', 'a', 'z', '', 'aaaaaaaaaa', 'aaa', 'aab', 'aad']) == 700
+    assert functions.num_from_name('zz', alphabet2, invalid_names = ['dfg', 'qwe', 'aA', 'z', 'gg', 'aaaaaaaaaa', 'aaa', 'aab', 'aad']) == 700
+    assert functions.num_from_name('bbd', alphabet2, invalid_names = []) == 1408
+
 
 def test_nums_from_names_fixed():
     assert functions.nums_from_names_fixed(['aaaaa', 'aaaab', 'aaaac', 'aaaad', 'aaaae'], alphabet2, 5) == [1, 2, 3, 4, 5]
@@ -107,6 +135,16 @@ def test_nums_from_names_fixed():
     assert functions.nums_from_names_fixed(['ac', 'ad', 'ba', 'bc'], '', 2) == []
     assert functions.nums_from_names_fixed([], alphabet3, 2) == []
 
+    assert functions.nums_from_names_fixed(['aabag', 'aabah', 'aabai', 'aabak', 'aabal'], alphabet2, 5, \
+        invalid_names = ['aadfg', 'aaqwe', 'aaaaa', 'aaaaz', 'aaagg', 'aaaaa', 'aabaa', 'aabab', 'aabaf', 'aabaj']) == [676, 677, 678, 679, 680]
+    assert functions.nums_from_names_fixed(['aabad', 'aabae', 'aabaf', 'aabah', 'aabai'], alphabet2, 5, \
+        invalid_names = ['aadfg', 'aaqwe', 'aaaa', 'aaaz', 'aagg', 'aaaaa', 'aabaa', 'aabab', 'aabac', 'aabag']) == [676, 677, 678, 679, 680]
+    assert functions.nums_from_names_fixed(['aabad', 'aabae', 'aabaf', 'aabah', 'aabai'], alphabet2, 5, \
+        invalid_names = ['aadfg', 'aaqwe', 'aaaaB', 'aaazA', 'aagg', 'aaaaa', 'aabaa', 'aabab', 'aabac', 'aabag']) == [676, 677, 678, 679, 680]
+    assert functions.nums_from_names_fixed(['aabag', 'aabah', 'aaagg', 'aabak', 'aabal'], alphabet2, 5, \
+        invalid_names = ['aadfg', 'aaqwe', 'aaaaa', 'aaaaz', 'aaagg', 'aaaaa', 'aabaa', 'aabab', 'aabaf', 'aabaj']) == [676, 677, -1, 679, 680]
+    assert functions.nums_from_names_fixed(['ac', 'ad', 'ba', 'bc'], alphabet2, 2, invalid_names = []) == [3, 4, 27, 29]
+
 
 def test_nums_from_names():
     assert functions.nums_from_names(['a', 'b', 'c', 'd', 'e'], alphabet2) == [1, 2, 3, 4, 5]
@@ -114,6 +152,16 @@ def test_nums_from_names():
     assert functions.nums_from_names(['ac', 'zz', 'ba', 'bc'], alphabet3) == [11, -1, 17, 19]
     assert functions.nums_from_names(['ac', 'ad', 'ba', 'bc'], '') == []
     assert functions.nums_from_names([], alphabet3) == []
+
+    assert functions.nums_from_names(['aaf', 'aag', 'aai', 'aaj'], alphabet2, \
+        invalid_names = ['dfg', 'qwe', 'a', 'z', 'gg', 'aaaaaaaaaa', 'aaa', 'aab', 'aae', 'aah']) == [702, 703, 704, 705]
+    assert functions.nums_from_names(['aae', 'aaf', 'aah', 'aai'], alphabet2, \
+        invalid_names = ['dfg', 'qwe', 'a', 'z', '', 'aaaaaaaaaa', 'aaa', 'aab', 'aad', 'aag']) == [702, 703, 704, 705]
+    assert functions.nums_from_names(['aae', 'aaf', 'aah', 'aai'], alphabet2, \
+        invalid_names = ['dfg', 'qwe', 'a', 'z', 'A', 'aaaaaaaaaa', 'aaa', 'aab', 'aad', 'aag']) == [702, 703, 704, 705]
+    assert functions.nums_from_names(['aaf', 'aag', 'aai', 'aaj'], alphabet2, \
+        invalid_names = ['dfg', 'qwe', 'a', 'z', 'gg', 'aaaaaaaaaa', 'aaa', 'aab', 'aae', 'aah', 'aai']) == [702, 703, -1, 704]
+    assert functions.nums_from_names(['ac', 'ad', 'ba', 'bc'], alphabet2, invalid_names = []) == [29, 30, 53, 55]
 
 
 if __name__ == '__main__':

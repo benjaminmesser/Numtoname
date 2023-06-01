@@ -241,6 +241,8 @@ def num_from_name_fixed(name: str, alphabet: str, name_length: int, invalid_name
     
     num = 1
     if invalid_names is not None and len(invalid_names) >= 1:
+        if name in invalid_names:
+            return -1
         deleted_element_count = 0
         for i in range(len(invalid_names)):
             if set(invalid_names[i - deleted_element_count]) <= set(alphabet):
@@ -268,7 +270,7 @@ def num_from_name_fixed(name: str, alphabet: str, name_length: int, invalid_name
             deleted_element_count = 0
             for i in range(len(invalid_nums)):
                 # print(invalid_nums)
-                if (num_of_name + skipped_name_count) >= invalid_nums[i - deleted_element_count]:
+                if num_of_name >= invalid_nums[i - deleted_element_count]:
                     if invalid_nums[i - deleted_element_count] > 0:
                         skipped_name_count += 1
                         
@@ -280,7 +282,7 @@ def num_from_name_fixed(name: str, alphabet: str, name_length: int, invalid_name
             if skipped_name_count == prev_skipped_name_count:
                 break
         
-        num += skipped_name_count
+        num -= skipped_name_count
 
     for i in range(len(name)):
         magnitude = len(alphabet) ** (len(name) - i - 1)
@@ -310,6 +312,8 @@ def num_from_name(name: str, alphabet: str, invalid_names: list[str] = None, war
     
     num = 0
     if invalid_names is not None and len(invalid_names) >= 1:
+        if name in invalid_names:
+            return -1
         deleted_element_count = 0
         for i in range(len(invalid_names)):
             if set(invalid_names[i - deleted_element_count]) <= set(alphabet):
@@ -337,7 +341,7 @@ def num_from_name(name: str, alphabet: str, invalid_names: list[str] = None, war
             deleted_element_count = 0
             for i in range(len(invalid_nums)):
                 # print(invalid_nums)
-                if (num_of_name + skipped_name_count) >= invalid_nums[i - deleted_element_count]:
+                if num_of_name >= invalid_nums[i - deleted_element_count]:
                     if invalid_nums[i - deleted_element_count] > 0:
                         skipped_name_count += 1
                         
@@ -349,7 +353,7 @@ def num_from_name(name: str, alphabet: str, invalid_names: list[str] = None, war
             if skipped_name_count == prev_skipped_name_count:
                 break
         
-        num += skipped_name_count
+        num -= skipped_name_count
 
     for i in range(len(name)):
         magnitude = len(alphabet) ** (len(name) - i - 1)
