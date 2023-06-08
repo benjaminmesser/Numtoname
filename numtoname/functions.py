@@ -1,24 +1,7 @@
+import helpers
+
+
 # A python module to convert a number or list of numbers into a variable name or list of variable names
-
-
-def base_generate_name_fixed(num: int, alphabet: str, name_length: int) -> str:
-    if num < 1 or alphabet is None or len(alphabet) < 1 or name_length < 1:
-        return ''
-    
-    name_string = ""
-    running_length = num
-    alphabet_size = len(alphabet)
-    for i in range(name_length):
-        if running_length > 1 and running_length > (alphabet_size ** (name_length - i - 1)):
-            for j in range(alphabet_size):
-                if running_length > ((alphabet_size - j - 1) * (alphabet_size ** (name_length - i - 1))):
-                    name_string += alphabet[(alphabet_size - j - 1)]
-                    running_length -= ((alphabet_size - j - 1) * (alphabet_size ** (name_length - i - 1)))
-                    break
-        else:
-            name_string += alphabet[0]
-    
-    return name_string
 
 
 def generate_name_fixed(num: int, alphabet: str, name_length: int, invalid_names: list[str] = None, invalid_contained: bool = False, warnings: bool = True) -> str:
@@ -43,27 +26,11 @@ def generate_name_fixed(num: int, alphabet: str, name_length: int, invalid_names
 
         # invalid_nums.sort()  # Superfluous
 
-        skipped_name_count = 0
-        while True:
-            prev_skipped_name_count = skipped_name_count
-            deleted_element_count = 0
-            for i in range(len(invalid_nums)):
-                # print(invalid_nums)
-                if (num + skipped_name_count) >= invalid_nums[i - deleted_element_count]:
-                    if invalid_nums[i - deleted_element_count] > 0:
-                        skipped_name_count += 1
-
-                    del invalid_nums[i- deleted_element_count]
-                    deleted_element_count += 1
-                else:
-                    break
-            
-            if skipped_name_count == prev_skipped_name_count:
-                break
+        skipped_name_count = helpers.get_skipped_name_count(num = num, invalid_nums = invalid_nums)
         
         num += skipped_name_count
 
-    return base_generate_name_fixed(num, alphabet, name_length)
+    return helpers.base_generate_name_fixed(num, alphabet, name_length)
 
 
 def generate_names_fixed(alphabet: str, name_length: int, start_num: int = -1, end_num: int = -1, num_list: list[int] = None, invalid_names: list[str] = None, invalid_contained: bool = False, warnings: bool = True) -> list[str]:
@@ -112,26 +79,12 @@ def generate_name(num: int, alphabet: str, invalid_names: list[str] = None, inva
 
         # invalid_nums.sort()  # Superfluous
 
-        skipped_name_count = 0
-        while True:
-            prev_skipped_name_count = skipped_name_count
-            deleted_element_count = 0
-            for i in range(len(invalid_nums)):
-                # print(invalid_nums)
-                if (num + skipped_name_count) >= invalid_nums[i - deleted_element_count]:
-                    if invalid_nums[i - deleted_element_count] > 0:
-                        skipped_name_count += 1
-                        
-                    del invalid_nums[i- deleted_element_count]
-                    deleted_element_count += 1
-                else:
-                    break
-            
-            if skipped_name_count == prev_skipped_name_count:
-                break
+        skipped_name_count = helpers.get_skipped_name_count(num = num, invalid_nums = invalid_nums)
         
         num += skipped_name_count
 
+
+    # Figure out name_length
 
     name_length = 0
     running_total = 0
@@ -144,7 +97,7 @@ def generate_name(num: int, alphabet: str, invalid_names: list[str] = None, inva
         else:
             break
     
-    return base_generate_name_fixed(num - last_running_total, alphabet, name_length)
+    return helpers.base_generate_name_fixed(num - last_running_total, alphabet, name_length)
 
 
 def generate_names(alphabet: str, start_num: int = -1, end_num: int = -1, num_list: list[int] = None, invalid_names: list[str] = None, invalid_contained: bool = False, warnings: bool = True) -> list[str]:
@@ -263,24 +216,8 @@ def num_from_name_fixed(name: str, alphabet: str, name_length: int, invalid_name
 
         # invalid_nums.sort()  # Superfluous
 
-        skipped_name_count = 0
         num_of_name = num_from_name_fixed(name, alphabet, name_length)
-        while True:
-            prev_skipped_name_count = skipped_name_count
-            deleted_element_count = 0
-            for i in range(len(invalid_nums)):
-                # print(invalid_nums)
-                if num_of_name >= invalid_nums[i - deleted_element_count]:
-                    if invalid_nums[i - deleted_element_count] > 0:
-                        skipped_name_count += 1
-                        
-                    del invalid_nums[i- deleted_element_count]
-                    deleted_element_count += 1
-                else:
-                    break
-            
-            if skipped_name_count == prev_skipped_name_count:
-                break
+        skipped_name_count = helpers.get_skipped_name_count_from_name(num = num, invalid_nums = invalid_nums, num_of_name = num_of_name)
         
         num -= skipped_name_count
 
@@ -334,24 +271,8 @@ def num_from_name(name: str, alphabet: str, invalid_names: list[str] = None, inv
 
         # invalid_nums.sort()  # Superfluous
 
-        skipped_name_count = 0
         num_of_name = num_from_name(name, alphabet)
-        while True:
-            prev_skipped_name_count = skipped_name_count
-            deleted_element_count = 0
-            for i in range(len(invalid_nums)):
-                # print(invalid_nums)
-                if num_of_name >= invalid_nums[i - deleted_element_count]:
-                    if invalid_nums[i - deleted_element_count] > 0:
-                        skipped_name_count += 1
-                        
-                    del invalid_nums[i- deleted_element_count]
-                    deleted_element_count += 1
-                else:
-                    break
-            
-            if skipped_name_count == prev_skipped_name_count:
-                break
+        skipped_name_count = helpers.get_skipped_name_count_from_name(num = num, invalid_nums = invalid_nums, num_of_name = num_of_name)
         
         num -= skipped_name_count
 
