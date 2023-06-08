@@ -64,3 +64,16 @@ def get_skipped_name_count_from_name(num: int, invalid_nums: list[str], num_of_n
     
     return skipped_name_count
 
+
+def get_permutations_containing_name(alphabet: str, name: str, name_length: int) -> list[str]:
+    if len(name) >= name_length:
+        return [name]
+    
+    full_name_permutations = []
+    for i in range(name_length - len(name) + 1):  # Loop through each place that name can be in entire string
+        for j in range(len(alphabet) ** (name_length - len(name))):  # Loop through all permutations of extra chars for each position
+            permutation = base_generate_name_fixed(j + 1, alphabet, (name_length - len(name)))
+            full_name_permutations.append(permutation[:i] + name + permutation[i:])
+    
+    return full_name_permutations
+

@@ -1,10 +1,17 @@
 import helpers
 
 
-# A python module to convert a number or list of numbers into a variable name or list of variable names
+# A python module to convert a number or list of numbers into a variable name or list of variable names (or vice versa)
 
 
 def generate_name_fixed(num: int, alphabet: str, name_length: int, invalid_names: list[str] = None, invalid_contained: bool = False, warnings: bool = True) -> str:
+    if num < 1 or alphabet is None or len(alphabet) < 1 or name_length < 1:
+        return ''
+    
+    if len(set(alphabet)) < len(alphabet):
+        print(f'\nThe given alphabet contains duplicate characters! Please give a proper alphabet.\n')
+        return ''
+    
     if invalid_names is not None and len(invalid_names) >= 1:
         deleted_element_count = 0
         for i in range(len(invalid_names)):
@@ -19,6 +26,25 @@ def generate_name_fixed(num: int, alphabet: str, name_length: int, invalid_names
                 print(f'\n{deleted_element_count} names in invalid_names contained characters outside of the specified alphabet. These were ignored.\n' \
                     'Set warnings = False to not see this message.\n')
         
+        if invalid_contained:
+            for invalid_name in invalid_names:  # Just remove single characters from alphabet if single characters in invalid_names and invalid_contained is True
+                if len(invalid_name) == 1:
+                    alphabet.replace(invalid_name, '')
+            
+            new_invalid_names = invalid_names
+            current_name_length = 3
+            while True:  # Continue generating longer permutations of each invalid_name until we are sure that we have enough
+                if (num + len(new_invalid_names) + 1) >= (len(alphabet) ** current_name_length):
+                    for invalid_name in invalid_names:
+                        new_invalid_names += helpers.get_permutations_containing_name(alphabet, invalid_name, current_name_length)
+
+                    new_invalid_names = list(set(new_invalid_names))  # Remove duplicates
+
+                    current_name_length += 1
+                else:
+                    invalid_names = new_invalid_names
+                    break
+
         # Sort invalid_names by alphabet, then by length
         invalid_names = sorted(sorted(invalid_names, key=lambda word: [alphabet.index(c) for c in word]), key = len)
 
@@ -29,6 +55,7 @@ def generate_name_fixed(num: int, alphabet: str, name_length: int, invalid_names
         skipped_name_count = helpers.get_skipped_name_count(num = num, invalid_nums = invalid_nums)
         
         num += skipped_name_count
+    
 
     return helpers.base_generate_name_fixed(num, alphabet, name_length)
 
@@ -41,6 +68,10 @@ def generate_names_fixed(alphabet: str, name_length: int, start_num: int = -1, e
         return []
     
     if num_list is not None and (start_num != -1 or end_num != -1):  # Ensure that we have either start_num and end_num or num_list, not both
+        return []
+    
+    if len(set(alphabet)) < len(alphabet):
+        print(f'\nThe given alphabet contains duplicate characters! Please give a proper alphabet.\n')
         return []
     
     names = []
@@ -58,6 +89,10 @@ def generate_name(num: int, alphabet: str, invalid_names: list[str] = None, inva
     if num < 1 or alphabet is None or len(alphabet) < 1:
         return ''
     
+    if len(set(alphabet)) < len(alphabet):
+        print(f'\nThe given alphabet contains duplicate characters! Please give a proper alphabet.\n')
+        return ''
+
     if invalid_names is not None and len(invalid_names) >= 1:
         deleted_element_count = 0
         for i in range(len(invalid_names)):
@@ -71,6 +106,25 @@ def generate_name(num: int, alphabet: str, invalid_names: list[str] = None, inva
             if warnings:
                 print(f'\n{deleted_element_count} names in invalid_names contained characters outside of the specified alphabet. These were ignored.\n' \
                     'Set warnings = False to not see this message.\n')
+        
+        if invalid_contained:
+            for invalid_name in invalid_names:  # Just remove single characters from alphabet if single characters in invalid_names and invalid_contained is True
+                if len(invalid_name) == 1:
+                    alphabet.replace(invalid_name, '')
+            
+            new_invalid_names = invalid_names
+            current_name_length = 3
+            while True:  # Continue generating longer permutations of each invalid_name until we are sure that we have enough
+                if (num + len(new_invalid_names) + 1) >= (len(alphabet) ** current_name_length):
+                    for invalid_name in invalid_names:
+                        new_invalid_names += helpers.get_permutations_containing_name(alphabet, invalid_name, current_name_length)
+
+                    new_invalid_names = list(set(new_invalid_names))  # Remove duplicates
+
+                    current_name_length += 1
+                else:
+                    invalid_names = new_invalid_names
+                    break
         
         # Sort invalid_names by alphabet, then by length
         invalid_names = sorted(sorted(invalid_names, key=lambda word: [alphabet.index(c) for c in word]), key = len)
@@ -108,6 +162,10 @@ def generate_names(alphabet: str, start_num: int = -1, end_num: int = -1, num_li
         return []
     
     if num_list is not None and (start_num != -1 or end_num != -1):  # Ensure that we have either start_num and end_num or num_list, not both
+        return []
+    
+    if len(set(alphabet)) < len(alphabet):
+        print(f'\nThe given alphabet contains duplicate characters! Please give a proper alphabet.\n')
         return []
     
     names = []
@@ -192,6 +250,10 @@ def num_from_name_fixed(name: str, alphabet: str, name_length: int, invalid_name
         if char not in alphabet:
             return -1
     
+    if len(set(alphabet)) < len(alphabet):
+        print(f'\nThe given alphabet contains duplicate characters! Please give a proper alphabet.\n')
+        return -1
+    
     num = 1
     if invalid_names is not None and len(invalid_names) >= 1:
         if name in invalid_names:
@@ -208,6 +270,17 @@ def num_from_name_fixed(name: str, alphabet: str, name_length: int, invalid_name
             if warnings:
                 print(f'\n{deleted_element_count} names in invalid_names contained characters outside of the specified alphabet. These were ignored.\n' \
                     'Set warnings = False to not see this message.\n')
+                
+        if invalid_contained:
+            for invalid_name in invalid_names:  # Just remove single characters from alphabet if single characters in invalid_names and invalid_contained is True
+                if len(invalid_name) == 1:
+                    alphabet.replace(invalid_name, '')
+            
+            new_invalid_names = invalid_names
+            for invalid_name in invalid_names:
+                new_invalid_names += helpers.get_permutations_containing_name(alphabet, invalid_name, len(name))
+
+            invalid_names = list(set(new_invalid_names))  # Remove duplicates
         
         # Sort invalid_names by alphabet, then by length
         invalid_names = sorted(sorted(invalid_names, key=lambda word: [alphabet.index(c) for c in word]), key = len)
@@ -220,6 +293,7 @@ def num_from_name_fixed(name: str, alphabet: str, name_length: int, invalid_name
         skipped_name_count = helpers.get_skipped_name_count_from_name(num = num, invalid_nums = invalid_nums, num_of_name = num_of_name)
         
         num -= skipped_name_count
+    
 
     for i in range(len(name)):
         magnitude = len(alphabet) ** (len(name) - i - 1)
@@ -230,6 +304,10 @@ def num_from_name_fixed(name: str, alphabet: str, name_length: int, invalid_name
 
 def nums_from_names_fixed(names: list[str], alphabet: str, name_length: int, invalid_names: list[str] = None, invalid_contained: bool = False, warnings: bool = True) -> list[int]:
     if names is None or len(names) < 1 or alphabet is None or len(alphabet) < 1 or name_length < 1:
+        return []
+    
+    if len(set(alphabet)) < len(alphabet):
+        print(f'\nThe given alphabet contains duplicate characters! Please give a proper alphabet.\n')
         return []
     
     nums = []
@@ -246,6 +324,10 @@ def num_from_name(name: str, alphabet: str, invalid_names: list[str] = None, inv
     for char in name:  # Verify that all chars in name are in given alphabet
         if char not in alphabet:
             return -1
+        
+    if len(set(alphabet)) < len(alphabet):
+        print(f'\nThe given alphabet contains duplicate characters! Please give a proper alphabet.\n')
+        return -1
     
     num = 0
     if invalid_names is not None and len(invalid_names) >= 1:
@@ -263,6 +345,17 @@ def num_from_name(name: str, alphabet: str, invalid_names: list[str] = None, inv
             if warnings:
                 print(f'\n{deleted_element_count} names in invalid_names contained characters outside of the specified alphabet. These were ignored.\n' \
                     'Set warnings = False to not see this message.\n')
+                
+        if invalid_contained:
+            for invalid_name in invalid_names:  # Just remove single characters from alphabet if single characters in invalid_names and invalid_contained is True
+                if len(invalid_name) == 1:
+                    alphabet.replace(invalid_name, '')
+            
+            new_invalid_names = invalid_names
+            for invalid_name in invalid_names:
+                new_invalid_names += helpers.get_permutations_containing_name(alphabet, invalid_name, len(name))
+
+            invalid_names = list(set(new_invalid_names))  # Remove duplicates
         
         # Sort invalid_names by alphabet, then by length
         invalid_names = sorted(sorted(invalid_names, key=lambda word: [alphabet.index(c) for c in word]), key = len)
@@ -275,6 +368,7 @@ def num_from_name(name: str, alphabet: str, invalid_names: list[str] = None, inv
         skipped_name_count = helpers.get_skipped_name_count_from_name(num = num, invalid_nums = invalid_nums, num_of_name = num_of_name)
         
         num -= skipped_name_count
+    
 
     for i in range(len(name)):
         magnitude = len(alphabet) ** (len(name) - i - 1)
@@ -285,6 +379,10 @@ def num_from_name(name: str, alphabet: str, invalid_names: list[str] = None, inv
 
 def nums_from_names(names: list[str], alphabet: str, invalid_names: list[str] = None, invalid_contained: bool = False, warnings: bool = True) -> list[int]:
     if names is None or len(names) < 1 or alphabet is None or len(alphabet) < 1:
+        return []
+    
+    if len(set(alphabet)) < len(alphabet):
+        print(f'\nThe given alphabet contains duplicate characters! Please give a proper alphabet.\n')
         return []
     
     nums = []

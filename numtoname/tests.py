@@ -1,4 +1,5 @@
 import functions
+import helpers
 
 
 alphabet1 = 'aAbBcCdDeEfFgGhHiIjJkKlLmMnNoOpPqQrRsStTuUvVwWxXyYzZ'
@@ -164,6 +165,18 @@ def test_nums_from_names():
     assert functions.nums_from_names(['ac', 'ad', 'ba', 'bc'], alphabet2, invalid_names = []) == [29, 30, 53, 55]
 
 
+def test_get_permutations_containing_name():
+    name = 'bob'
+    name_length = 5
+    assert len(helpers.get_permutations_containing_name(alphabet3, name, name_length)) == (name_length - len(name) + 1) * (len(alphabet3) ** (name_length - len(name)))
+    name_length = 7
+    assert len(helpers.get_permutations_containing_name(alphabet3, name, name_length)) == (name_length - len(name) + 1) * (len(alphabet3) ** (name_length - len(name)))
+    name = 'bb'
+    name_length = 4
+    assert len(helpers.get_permutations_containing_name(alphabet3, name, name_length)) == (name_length - len(name) + 1) * (len(alphabet3) ** (name_length - len(name)))
+    assert len(helpers.get_permutations_containing_name(alphabet2, name, name_length)) == (name_length - len(name) + 1) * (len(alphabet2) ** (name_length - len(name)))
+
+
 if __name__ == '__main__':
     test_generate_name_fixed()
     test_generate_name()
@@ -178,6 +191,10 @@ if __name__ == '__main__':
 
     test_nums_from_names_fixed()
     test_nums_from_names()
+
+
+
+    test_get_permutations_containing_name()
 
     print('All tests passed successfully!')
 

@@ -4,7 +4,7 @@ setup(
   packages = ['numtoname'],   # Chose the same as "name"
   version = '0.2.2',
   license='MIT',        # Chose a license from here: https://help.github.com/articles/licensing-a-repository
-  description = 'A python module to convert a number or list of numbers into a variable name or list of variable names',
+  description = 'A python module to convert a number or list of numbers into a variable name or list of variable names (or vice versa)',
   author = 'Ben Messer',
   author_email = 'benjamin.messer@outlook.com',
   url = 'https://github.com/benjaminmesser/Numtoname',
