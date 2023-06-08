@@ -32,20 +32,12 @@ def generate_name_fixed(num: int, alphabet: str, name_length: int, invalid_names
                     alphabet.replace(invalid_name, '')
             
             new_invalid_names = invalid_names
-            current_name_length = 3
-            while True:  # Continue generating longer permutations of each invalid_name until we are sure that we have enough
-                if (num + len(new_invalid_names) + 1) >= (len(alphabet) ** current_name_length):
-                    for invalid_name in invalid_names:
-                        new_invalid_names += helpers.get_permutations_containing_name(alphabet, invalid_name, current_name_length)
-                        new_invalid_names = list(set(new_invalid_names))  # Remove duplicates on each iteration to reduce memory
+            for invalid_name in invalid_names:
+                new_invalid_names += helpers.get_permutations_containing_name(alphabet, invalid_name, name_length)
+                new_invalid_names = list(set(new_invalid_names))  # Remove duplicates on each iteration to reduce memory
 
-                    new_invalid_names = list(set(new_invalid_names))  # Remove duplicates
-
-                    current_name_length += 1
-                else:
-                    invalid_names = new_invalid_names
-                    del new_invalid_names  # Reduce memory
-                    break
+            invalid_names = list(set(new_invalid_names))  # Remove duplicates
+            del new_invalid_names  # Reduce memory
 
         # Sort invalid_names by alphabet, then by length
         invalid_names = sorted(sorted(invalid_names, key=lambda word: [alphabet.index(c) for c in word]), key = len)
