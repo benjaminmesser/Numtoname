@@ -1,5 +1,5 @@
-import functions
-import helpers
+import numtoname.functions as functions
+import numtoname.helpers  as helpers
 
 import sys
 from tqdm import tqdm, trange
